@@ -27,4 +27,5 @@ jobs:
         with:
           name: YunPlugin-Docker-Build
           path: |
-            YunPlugin/bin/Release/
+            YunPlugin/bin/Release/netcoreapp3.1/YunBot.dll
+            YunPlugin/bin/Release/netcoreapp3.1/YunBot.pdb

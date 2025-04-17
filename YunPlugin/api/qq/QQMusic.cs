@@ -358,7 +358,8 @@ namespace YunPlugin.api.qq
             }
             else if (type == "get")
             {
-                var response = await httpClient.GetHttpResponse("/user/getCookie");
+                var id = data;
+                var response = await httpClient.GetHttpResponse($"/user/getCookie?id={id}");
                 var heades = response.Headers;
 
                 IEnumerable<string> cookies = heades.GetValues("Set-Cookie");

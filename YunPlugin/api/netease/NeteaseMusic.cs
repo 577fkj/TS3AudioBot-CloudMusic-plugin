@@ -330,7 +330,7 @@ namespace YunPlugin.api.netease
                 byte[] bytes = Convert.FromBase64String(img[1]);
                 Stream stream = new MemoryStream(bytes);
                 await ts3Client.UploadAvatar(stream);
-                await ts3Client.ChangeDescription("请用网易云APP扫描二维码登陆");
+                await ts3Client.ChangeDescription("请用网易云APP扫描二维码登录");
 
                 int i = 0;
                 long code;
@@ -345,20 +345,20 @@ namespace YunPlugin.api.netease
                     Thread.Sleep(1000);
                     if (i == 120)
                     {
-                        result = "登陆失败或者超时";
-                        await ts3Client.SendChannelMessage("登陆失败或者超时");
+                        result = "二维码登录失败或者超时";
+                        //await ts3Client.SendChannelMessage("二维码登录失败或者超时");
                         break;
                     }
                     if (code == 803)
                     {
-                        result = "登陆成功";
-                        await ts3Client.SendChannelMessage("登陆成功");
+                        result = "二维码登录成功";
+                        //await ts3Client.SendChannelMessage("二维码登录成功");
                         Config.RefreshCookie = true;
                         break;
                     }
                 }
                 await ts3Client.DeleteAvatar();
-                await ts3Client.ChangeDescription("已登陆");
+                await ts3Client.ChangeDescription("网易云已登录");
                 Cookie = Utils.ProcessCookie(cookies);
 
                 return result;
@@ -391,11 +391,11 @@ namespace YunPlugin.api.netease
                     if (status.code == 200)
                     {
                         Cookie = Utils.ProcessCookie(status.cookie);
-                        return "登陆成功";
+                        return "登录成功";
                     }
                     else
                     {
-                        return "登陆失败";
+                        return "登录失败";
                     }
                 }
                 else
@@ -550,7 +550,7 @@ namespace YunPlugin.api.netease
             VIPResult vipResult = await httpClient.Get<VIPResult>("/vip/info");
 
             string extra = "无VIP";
-            if (vipResult != null && vipResult.code == 200 && vipResult.data != null && vipResult.data.redVipAnnualCount != -1)
+            if (vipResult != null && vipResult.code == 200 && vipResult.data != null)
             {
                 var currentTime = Utils.GetTimeStampMs();
                 if (vipResult.data.redplus.expireTime > currentTime)
@@ -565,6 +565,13 @@ namespace YunPlugin.api.netease
                 {
                     extra = $"音乐包 {vipResult.data.musicPackage.vipLevel}级 到期时间: {Utils.ConvertTimeStamp(vipResult.data.musicPackage.expireTime)}";
                 }
+            }
+
+            if (vipResult.data.redVipAnnualCount == 1)
+            {
+                extra = $"年费{extra}";
+            }else{
+                extra = $"非年费{extra}";
             }
 
             return new UserInfo
