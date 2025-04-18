@@ -39,7 +39,7 @@ jobs:
 
       - name: Package Build Artifacts
         run: |
-          Compress-Archive -Path YunPlugin/bin/Release/netcoreapp3.1/YunBot.* -DestinationPath YunPlugin.zip
+          Compress-Archive -Path YunPlugin/bin/Release/netcoreapp3.1/YunBot.dll, YunPlugin/bin/Release/netcoreapp3.1/YunBot.pdb -DestinationPath YunPlugin.zip
 
       - name: Upload Build Artifact (zip)
         uses: actions/upload-artifact@v4
@@ -62,7 +62,7 @@ jobs:
 
       - name: Package Docker Build Artifacts
         run: |
-          Compress-Archive -Path YunPlugin/bin/Release/netcoreapp3.1/YunBot.* -DestinationPath YunPlugin-docker.zip
+          Compress-Archive -Path YunPlugin/bin/Release/netcoreapp3.1/YunBot.dll, YunPlugin/bin/Release/netcoreapp3.1/YunBot.pdb -DestinationPath YunPlugin-docker.zip
 
       - name: Upload Docker Build Artifact (zip)
         uses: actions/upload-artifact@v4
