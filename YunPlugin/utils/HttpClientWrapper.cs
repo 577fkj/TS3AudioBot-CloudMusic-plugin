@@ -261,7 +261,7 @@ namespace YunPlugin.utils
             }
             else
             {
-                Log = YunPlgun.GetLogger(GetType().Name);
+                Log = YunPlugin.GetLogger(GetType().Name);
             }
 
             HttpClient.Timeout = DefaultTimeout;

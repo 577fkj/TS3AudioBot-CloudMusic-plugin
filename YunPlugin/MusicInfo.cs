@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using TS3AudioBot.ResourceFactories;
-using YunPlugin;
 
 public enum Mode
 {
@@ -48,7 +47,7 @@ public abstract class MusicInfo
     {
         Id = id;
         InPlayList = inPlayList;
-        Log = YunPlgun.GetLogger(GetType().Name);
+        Log = YunPlugin.YunPlugin.GetLogger(GetType().Name);
     }
 
     public string GetAuthor()

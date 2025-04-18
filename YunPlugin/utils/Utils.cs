@@ -22,7 +22,7 @@ public static class Utils
             }
         }
 
-        // YunPlugin.YunPlgun.GetLogger().Info($"HttpGetAsync: {url} header: {request.Headers}");
+        // YunPlugin.YunPlugin.GetLogger().Info($"HttpGetAsync: {url} header: {request.Headers}");
 
         return await request.AsJson<T>();
     }

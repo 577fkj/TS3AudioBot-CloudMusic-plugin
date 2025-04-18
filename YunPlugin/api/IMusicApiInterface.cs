@@ -155,7 +155,7 @@ namespace YunPlugin.api
             this.serverView = serverView;
             Config = config;
 
-            Log = YunPlgun.GetLogger(GetType().Name);
+            Log = YunPlugin.GetLogger(GetType().Name);
             LogInfo($"Init {GetType().Name}");
         }
 

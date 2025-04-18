@@ -20,11 +20,11 @@ using YunPlugin.api;
 
 namespace YunPlugin
 {
-    public class YunPlgun : IBotPlugin /* or ICorePlugin */
+    public class YunPlugin : IBotPlugin /* or ICorePlugin */
     {
-        private static YunPlgun Instance;
+        private static YunPlugin Instance;
         public static Config config;
-        private static string LoggerName = $"TS3AudioBot.Plugins.{typeof(YunPlgun).Namespace}";
+        private static string LoggerName = $"TS3AudioBot.Plugins.{typeof(YunPlugin).Namespace}";
         private static NLog.Logger Log = NLog.LogManager.GetLogger(LoggerName);
 
         public static NLog.Logger GetLogger(string name = "")
@@ -50,7 +50,7 @@ namespace YunPlugin
 
         private Dictionary<MusicApiType, IMusicApiInterface> musicApiInterfaces = new Dictionary<MusicApiType, IMusicApiInterface>();
 
-        public YunPlgun(PlayManager playManager, Ts3Client ts3Client, Connection serverView)
+        public YunPlugin(PlayManager playManager, Ts3Client ts3Client, Connection serverView)
         {
             Instance = this;
             this.playManager = playManager;
