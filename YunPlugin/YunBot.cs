@@ -27,6 +27,8 @@ namespace YunPlugin
         private static string LoggerName = $"TS3AudioBot.Plugins.{typeof(YunPlugin).Namespace}";
         private static NLog.Logger Log = NLog.LogManager.GetLogger(LoggerName);
 
+        private static string PluginVersion = "1.1.3";
+
         public static NLog.Logger GetLogger(string name = "")
         {
             if (!string.IsNullOrEmpty(name))
@@ -75,7 +77,7 @@ namespace YunPlugin
 
             _ = updateOwnChannel();
 
-            ts3Client.SendChannelMessage("云音乐插件加载成功！");
+            ts3Client.SendChannelMessage($"云音乐插件加载成功！Ver: {PluginVersion}");
         }
 
         private IMusicApiInterface GetApiInterface(MusicApiType type = MusicApiType.None)

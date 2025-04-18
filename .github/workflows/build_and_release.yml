@@ -1,0 +1,92 @@
+name: Build and Release Plugin
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download TS3AudioBot DLLs
+        run: |
+          Invoke-WebRequest -Uri "https://splamy.de/api/nightly/projects/ts3ab/master/download" -OutFile "ts3ab.zip"
+
+      - name: Extract DLLs
+        run: |
+          Expand-Archive -Path "ts3ab.zip" -DestinationPath "ts3ab"
+          Copy-Item "ts3ab/TS3AudioBot.dll" -Destination "YunPlugin/lib/TS3AudioBot.dll" -Force
+          Copy-Item "ts3ab/TSLib.dll" -Destination "YunPlugin/lib/TSLib.dll" -Force
+          Copy-Item "ts3ab/NLog.dll" -Destination "YunPlugin/lib/NLog.dll" -Force
+          Copy-Item "ts3ab/Newtonsoft.Json.dll" -Destination "YunPlugin/lib/Newtonsoft.Json.dll" -Force
+
+      - name: Restore NuGet packages
+        run: dotnet restore "YunPlugin/YunPlugin.sln"
+
+      - name: Build solution
+        run: dotnet build "YunPlugin/YunPlugin.sln" --configuration Release
+
+      - name: Package Build Artifacts
+        run: |
+          Compress-Archive -Path YunPlugin/bin/Release/netcoreapp3.1/YunBot.* -DestinationPath YunPlugin.zip
+
+      - name: Upload Build Artifact (zip)
+        uses: actions/upload-artifact@v4
+        with:
+          name: YunPlugin
+          path: YunPlugin.zip
+
+  docker-build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Restore NuGet packages
+        run: dotnet restore "YunPlugin/YunPlugin.sln"
+
+      - name: Build solution (with self-contained dependencies)
+        run: dotnet build "YunPlugin/YunPlugin.sln" --configuration Release
+
+      - name: Package Docker Build Artifacts
+        run: |
+          Compress-Archive -Path YunPlugin/bin/Release/netcoreapp3.1/YunBot.* -DestinationPath YunPlugin-docker.zip
+
+      - name: Upload Docker Build Artifact (zip)
+        uses: actions/upload-artifact@v4
+        with:
+          name: YunPlugin-docker
+          path: YunPlugin-docker.zip
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    needs: [build, docker-build]
+
+    steps:
+      - name: Download YunPlugin.zip
+        uses: actions/download-artifact@v4
+        with:
+          name: YunPlugin
+
+      - name: Download YunPlugin-docker.zip
+        uses: actions/download-artifact@v4
+        with:
+          name: YunPlugin-docker
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: |
+            YunPlugin.zip
+            YunPlugin-docker.zip

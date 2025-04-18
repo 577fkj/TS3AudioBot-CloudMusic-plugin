@@ -1,0 +1,67 @@
+name: 📝 通用问题模板 | General Issue Template
+description: 用于报告 Bug、提出新功能建议或其他问题 | Report a bug, request a feature, or ask a question
+title: "[类型 | Type] 简短描述你的问题 | Brief description of the issue"
+labels: ["triage"]
+body:
+  - type: dropdown
+    id: type
+    attributes:
+      label: 📌 问题类型 | Issue Type
+      description: 请选择你要提交的问题类型 | Please select the type of issue you are reporting
+      options:
+        - 🐞 Bug 报告 | Bug Report
+        - ✨ 功能请求 | Feature Request
+        - 💬 其他问题 | Other Question
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: 🔢 插件版本 / Git 标签 | Plugin Version / Git Tag
+      placeholder: 例如：v1.2.3 或 main 分支 | e.g. v1.2.3 or main branch
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 📋 问题描述 | Description
+      description: 请描述你遇到的问题或想要的功能 | Describe the issue or feature you'd like to request
+      placeholder: |
+        如果是 Bug，请说明如何复现；
+        如果是功能请求，请简述场景和动机。
+        ---
+        If it's a bug, please explain how to reproduce it;
+        If it's a feature request, please describe the scenario and motivation.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: 🔍 如何复现？（Bug 报告适用）| Steps to Reproduce (for Bug Reports)
+      description: 写下重现问题的步骤 | List the steps to reproduce the issue
+      placeholder: |
+        1. 打开插件 / Open the plugin
+        2. 执行操作 / Perform some actions
+        3. 出现错误 / Error occurs
+    validations:
+      required: false
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 📄 日志 / 控制台输出 | Logs / Console Output
+      description: 粘贴错误日志或异常，有助于定位问题 | Paste logs or stack traces here to help diagnose the issue
+      render: shell
+    validations:
+      required: false
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: 💡 其他补充 | Additional Info
+      description: 你认为有帮助的任何补充说明 | Any additional context or notes
+    validations:
+      required: false
