@@ -50,7 +50,7 @@ namespace YunPlugin
         private static ulong ownChannelID;
         private static List<ulong> ownChannelClients = new List<ulong>();
 
-        private Dictionary<MusicApiType, IMusicApiInterface> musicApiInterfaces = new Dictionary<MusicApiType, IMusicApiInterface>();
+        private Dictionary<MusicApiType, IMusicApiInterface> musicApiInterfaces;
 
         public YunPlugin(PlayManager playManager, Ts3Client ts3Client, Connection serverView)
         {
@@ -62,6 +62,7 @@ namespace YunPlugin
 
         public void Initialize()
         {
+            musicApiInterfaces = new Dictionary<MusicApiType, IMusicApiInterface>();
             playControl = new PlayControl(playManager, ts3Client, Log);
             loadConfig(playControl);
 
