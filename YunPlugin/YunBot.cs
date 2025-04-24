@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -27,7 +27,7 @@ namespace YunPlugin
         private static string LoggerName = $"TS3AudioBot.Plugins.{typeof(YunPlugin).Namespace}";
         private static NLog.Logger Log = NLog.LogManager.GetLogger(LoggerName);
 
-        private static string PluginVersion = "1.1.3";
+        private static string PluginVersion = "1.1.4";
 
         public static NLog.Logger GetLogger(string name = "")
         {
