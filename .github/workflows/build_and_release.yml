@@ -13,11 +13,28 @@ permissions:
 
 jobs:
   build:
+    if: ${{ !contains(github.event.head_commit.message, '[skip]') }}
     runs-on: windows-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Update PluginVersion in YunBot.cs
+        shell: pwsh
+        run: |
+          $hash = git rev-parse --short HEAD
+          if ($env:GITHUB_REF -like 'refs/tags/v*') {
+            $tag = $env:GITHUB_REF_NAME
+            $ver = "$tag-$hash"
+          } else {
+            $orig = (Select-String -Path YunPlugin/YunBot.cs -Pattern 'PluginVersion = "(.*?)"').Matches[0].Groups[1].Value
+            $ver = "$orig-$hash"
+          }
+          Write-Host "Setting PluginVersion to $ver"
+          (Get-Content YunPlugin/YunBot.cs) `
+            -replace 'PluginVersion = ".*?"', "PluginVersion = `"$ver`"" `
+          | Set-Content YunPlugin/YunBot.cs
 
       - name: Download TS3AudioBot DLLs
         run: |
@@ -26,9 +43,9 @@ jobs:
       - name: Extract DLLs
         run: |
           Expand-Archive -Path "ts3ab.zip" -DestinationPath "ts3ab"
-          Copy-Item "ts3ab/TS3AudioBot.dll" -Destination "YunPlugin/lib/TS3AudioBot.dll" -Force
-          Copy-Item "ts3ab/TSLib.dll" -Destination "YunPlugin/lib/TSLib.dll" -Force
-          Copy-Item "ts3ab/NLog.dll" -Destination "YunPlugin/lib/NLog.dll" -Force
+          Copy-Item "ts3ab/TS3AudioBot.dll"     -Destination "YunPlugin/lib/TS3AudioBot.dll"     -Force
+          Copy-Item "ts3ab/TSLib.dll"           -Destination "YunPlugin/lib/TSLib.dll"           -Force
+          Copy-Item "ts3ab/NLog.dll"            -Destination "YunPlugin/lib/NLog.dll"            -Force
           Copy-Item "ts3ab/Newtonsoft.Json.dll" -Destination "YunPlugin/lib/Newtonsoft.Json.dll" -Force
 
       - name: Restore NuGet packages
@@ -46,11 +63,28 @@ jobs:
             YunPlugin/bin/Release/netcoreapp3.1/YunBot.pdb
 
   docker-build:
+    if: ${{ !contains(github.event.head_commit.message, '[skip]') }}
     runs-on: windows-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Update PluginVersion in YunBot.cs
+        shell: pwsh
+        run: |
+          $hash = git rev-parse --short HEAD
+          if ($env:GITHUB_REF -like 'refs/tags/v*') {
+            $tag = $env:GITHUB_REF_NAME
+            $ver = "$tag-$hash"
+          } else {
+            $orig = (Select-String -Path YunPlugin/YunBot.cs -Pattern 'PluginVersion = "(.*?)"').Matches[0].Groups[1].Value
+            $ver = "$orig-$hash"
+          }
+          Write-Host "Setting PluginVersion to $ver"
+          (Get-Content YunPlugin/YunBot.cs) `
+            -replace 'PluginVersion = ".*?"', "PluginVersion = `"$ver`"" `
+          | Set-Content YunPlugin/YunBot.cs
 
       - name: Restore NuGet packages
         run: dotnet restore "YunPlugin/YunPlugin.sln"
@@ -72,6 +106,34 @@ jobs:
     needs: [build, docker-build]
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Update and push PluginVersion in release
+        shell: pwsh
+        run: |
+          $hash = git rev-parse --short HEAD
+          if ($env:GITHUB_REF -like 'refs/tags/v*') {
+            $tag = $env:GITHUB_REF_NAME
+            $ver = "$tag-$hash"
+          } else {
+            $orig = (Select-String -Path YunPlugin/YunBot.cs -Pattern 'PluginVersion = "(.*?)"').Matches[0].Groups[1].Value
+            $ver = "$orig-$hash"
+          }
+          Write-Host "Setting PluginVersion to $ver"
+          (Get-Content YunPlugin/YunBot.cs) `
+            -replace 'PluginVersion = ".*?"', "PluginVersion = `"$ver`"" `
+          | Set-Content YunPlugin/YunBot.cs
+
+      - name: Commit and push version bump
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add YunPlugin/YunBot.cs
+          git commit -m "chore: bump PluginVersion to $ver [skip]" || echo "No changes to commit"
+          git push
+
       - name: Download YunPlugin build files
         uses: actions/download-artifact@v4
         with:
