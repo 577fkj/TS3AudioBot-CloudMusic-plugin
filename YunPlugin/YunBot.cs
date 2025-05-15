@@ -27,7 +27,7 @@ namespace YunPlugin
         private static string LoggerName = $"TS3AudioBot.Plugins.{typeof(YunPlugin).Namespace}";
         private static NLog.Logger Log = NLog.LogManager.GetLogger(LoggerName);
 
-        private static string PluginVersion = "1.1.4";
+        private static string PluginVersion = "1.1.5";
 
         public static NLog.Logger GetLogger(string name = "")
         {
