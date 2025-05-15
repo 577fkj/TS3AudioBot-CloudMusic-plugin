@@ -230,7 +230,13 @@ namespace YunPlugin.api.netease
             string imgUrl = playListInfo.playlist.coverImgUrl;
 
             await ts3Client.ChangeDescription(name);
-            await MainCommands.CommandBotAvatarSet(ts3Client, imgUrl);
+            try
+            {
+                await MainCommands.CommandBotAvatarSet(ts3Client, imgUrl);
+            } catch (Exception e)
+            {
+                LogError(e, "Set avatar error");
+            }
             await ts3Client.SendChannelMessage($"开始添加歌单 [{name}]");
 
             List<MusicInfo> musicInfos = new List<MusicInfo>();
