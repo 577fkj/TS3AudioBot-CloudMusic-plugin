@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace YunPlugin.api.qq
 {
@@ -247,53 +248,60 @@ namespace YunPlugin.api.qq
         public string vid { get; set; }
     }
 
-    public class PlaylistInfo
+    public class QQMusicPlayListTag
     {
-        public string disstid { get; set; }
-        public int dir_show { get; set; }
-        public int owndir { get; set; }
-        public int dirid { get; set; }
-        public string coveradurl { get; set; }
-        public int dissid { get; set; }
-        public string login { get; set; }
-        public string uin { get; set; }
-        public string encrypt_uin { get; set; }
-        public string dissname { get; set; }
-        public string logo { get; set; }
-        public string pic_mid { get; set; }
-        public string album_pic_mid { get; set; }
-        public int pic_dpi { get; set; }
-        public int isAd { get; set; }
-        public string desc { get; set; }
-        public int ctime { get; set; }
-        public int mtime { get; set; }
-        public string headurl { get; set; }
-        public string ifpicurl { get; set; }
-        public string nick { get; set; }
-        public string nickname { get; set; }
-        public int type { get; set; }
-        public int singerid { get; set; }
-        public string singermid { get; set; }
-        public int isvip { get; set; }
-        public int isdj { get; set; }
-        public List<string> tags { get; set; }
-        public int songnum { get; set; }
-        public string songids { get; set; }
-        public string songtypes { get; set; }
-        public int disstype { get; set; }
-        public string dir_pic_url2 { get; set; }
-        public int song_update_time { get; set; }
-        public int song_update_num { get; set; }
-        public int total_song_num { get; set; }
-        public int song_begin { get; set; }
-        public int cur_song_num { get; set; }
-        public List<Songlist> songlist { get; set; }
-        public int visitnum { get; set; }
-        public int cmtnum { get; set; }
-        public int buynum { get; set; }
-        public string scoreavage { get; set; }
-        public int scoreusercount { get; set; }
+    public int id { get; set; }
+    public string name { get; set; }
+    public int pid { get; set; }
     }
+
+    public class PlaylistInfo
+        {
+            public string disstid { get; set; }
+            public int dir_show { get; set; }
+            public int owndir { get; set; }
+            public int dirid { get; set; }
+            public string coveradurl { get; set; }
+            public int dissid { get; set; }
+            public string login { get; set; }
+            public string uin { get; set; }
+            public string encrypt_uin { get; set; }
+            public string dissname { get; set; }
+            public string logo { get; set; }
+            public string pic_mid { get; set; }
+            public string album_pic_mid { get; set; }
+            public int pic_dpi { get; set; }
+            public int isAd { get; set; }
+            public string desc { get; set; }
+            public int ctime { get; set; }
+            public int mtime { get; set; }
+            public string headurl { get; set; }
+            public string ifpicurl { get; set; }
+            public string nick { get; set; }
+            public string nickname { get; set; }
+            public int type { get; set; }
+            public int singerid { get; set; }
+            public string singermid { get; set; }
+            public int isvip { get; set; }
+            public int isdj { get; set; }
+            public List<QQMusicPlayListTag> tags { get; set; }
+            public int songnum { get; set; }
+            public string songids { get; set; }
+            public string songtypes { get; set; }
+            public int disstype { get; set; }
+            public string dir_pic_url2 { get; set; }
+            public int song_update_time { get; set; }
+            public int song_update_num { get; set; }
+            public int total_song_num { get; set; }
+            public int song_begin { get; set; }
+            public int cur_song_num { get; set; }
+            public List<Songlist> songlist { get; set; }
+            public int visitnum { get; set; }
+            public int cmtnum { get; set; }
+            public int buynum { get; set; }
+            public string scoreavage { get; set; }
+            public int scoreusercount { get; set; }
+        }
 
     public class Creator
     {
