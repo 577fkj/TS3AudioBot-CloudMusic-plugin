@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -260,6 +260,10 @@ namespace YunPlugin
                     catch (TaskCanceledException)
                     {
                         Log.Info("Sleep timer cancelled");
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error(ex, "Failed to move to default channel");
                     }
                 }
             }
