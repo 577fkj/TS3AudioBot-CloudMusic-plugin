@@ -249,6 +249,11 @@ namespace YunPlugin
                             elapsed += interval;
                         }
 
+                        if (ownChannelID == config.DefaultChannelID)
+                        {
+                            Log.Info("Sleep timer elapsed, already in default channel, skipping move");
+                            return;
+                        }
                         Log.Info("Sleep timer elapsed, moving to default channel");
                         await ts3Client.MoveTo(new ChannelId(config.DefaultChannelID));
                     }
